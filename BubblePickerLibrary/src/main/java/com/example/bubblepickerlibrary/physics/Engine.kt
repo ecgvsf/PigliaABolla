@@ -60,7 +60,16 @@ object Engine {
     fun move() {
         toBeResized.forEach { it.circleBody.resize(resizeStep) }
         world.step(if (centerImmediately) 0.035f else step, 11, 11)
+        bodies.forEach {
+            if (it.deleted) {
+                world.destroyBody(it.physicalBody)
+                it.physicalBody.setActive(false)
+                bodies.remove(it)
+            }
+        }
         bodies.forEach { move(it) }
+
+        toBeResized.forEach { if (it.circleBody.deleted) toBeResized.remove(it) }
         toBeResized.removeAll(toBeResized.filter { it.circleBody.finished })
         stepsCount++
         if (stepsCount >= 10) {
@@ -94,6 +103,16 @@ object Engine {
         if (item.circleBody.isBusy) return false
 
         item.circleBody.defineState()
+
+        toBeResized.add(item)
+
+        return true
+    }
+
+    fun remove(item: Item): Boolean {
+        if (item.circleBody.isBusy) return false
+
+        item.circleBody.defineRemove()
 
         toBeResized.add(item)
 

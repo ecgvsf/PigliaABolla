@@ -28,7 +28,7 @@ class CircleBody(val world: World, var position: Vec2, var radius: Float, var in
     lateinit var physicalBody: Body
 
     var increased = false
-
+    var deleted = false
     var isVisible = true
 
     private val margin = 0.01f
@@ -67,11 +67,15 @@ class CircleBody(val world: World, var position: Vec2, var radius: Float, var in
         }
     }
 
-    fun resize(step: Float) = if (increased) decrease(step) else increase(step)
+    fun resize(step: Float) {
+        if (deleted) decrease(step)
+        else
+            if (increased) decrease(step) else increase(step)
+    }
 
     fun decrease(step: Float) {
         isDecreasing = true
-        radius -= step
+        radius -= if(deleted) radius else step
         reset()
 
         if (Math.abs(radius - decreasedRadius) < step) {
@@ -98,6 +102,10 @@ class CircleBody(val world: World, var position: Vec2, var radius: Float, var in
     fun defineState() {
         toBeIncreased = !increased
         toBeDecreased = increased
+    }
+
+    fun defineRemove() {
+        deleted = true
     }
 
     private fun clear() {

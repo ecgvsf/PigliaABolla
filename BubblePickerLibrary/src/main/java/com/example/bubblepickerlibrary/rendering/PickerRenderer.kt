@@ -114,6 +114,17 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
         }
     }
 
+    fun removeFrame(item: PickerItem) {
+        for(circle in circles) {
+            if (item == circle.pickerItem) {
+                circles.remove(circle)
+            }
+        }
+        vertices = FloatArray(circles.size * 8)
+        textureVertices = FloatArray(circles.size * 8)
+        calculateVertices()
+    }
+
     private fun drawFrame() {
         glClear(GL_COLOR_BUFFER_BIT)
         glUniform4f(glGetUniformLocation(programId, U_BACKGROUND), 1f, 1f, 1f, 0f)
@@ -160,6 +171,17 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
         if (Engine.resize(this)) {
             listener?.let {
                 if (circleBody.increased) it.onBubbleDeselected(pickerItem) else it.onBubbleSelected(pickerItem)
+            }
+        }
+    }
+
+    fun remove(x: Float, y: Float) = getItem(Vec2(x, glView.height - y))?.apply {
+        if (Engine.remove(this)) {
+            listener?.let {
+                if (circleBody.deleted) {
+                    removeFrame(pickerItem)
+                    it.onBubbleRemoved(pickerItem, circles.size)
+                }
             }
         }
     }

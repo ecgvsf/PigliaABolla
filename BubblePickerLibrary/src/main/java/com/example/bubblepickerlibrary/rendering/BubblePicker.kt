@@ -67,6 +67,7 @@ class BubblePicker : GLSurfaceView {
     private var startY = 0f
     private var previousX = 0f
     private var previousY = 0f
+    private var atts:AttributeSet? = null
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
@@ -76,6 +77,7 @@ class BubblePicker : GLSurfaceView {
         holder.setFormat(PixelFormat.RGBA_8888)
         setRenderer(renderer)
         renderMode = RENDERMODE_CONTINUOUSLY
+        atts = attrs
         attrs?.let { retrieveAttrubutes(attrs) }
     }
 
