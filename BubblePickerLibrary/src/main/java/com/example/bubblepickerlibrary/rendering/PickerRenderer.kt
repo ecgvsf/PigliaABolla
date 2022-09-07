@@ -58,7 +58,7 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         glClearColor(backgroundColor?.red ?: 1f, backgroundColor?.green ?: 1f,
-                backgroundColor?.blue ?: 1f, backgroundColor?.alpha ?: 1f)
+            backgroundColor?.blue ?: 1f, backgroundColor?.alpha ?: 1f)
         enableTransparency()
     }
 
@@ -110,7 +110,7 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
 
         body.initialPosition.apply {
             vertices?.put(8 * index, floatArrayOf(x - radiusX, y + radiusY, x - radiusX, y - radiusY,
-                    x + radiusX, y + radiusY, x + radiusX, y - radiusY))
+                x + radiusX, y + radiusY, x + radiusX, y - radiusY))
         }
     }
 
@@ -141,7 +141,7 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
 
     private fun attachShaders() {
         programId = createProgram(createShader(GL_VERTEX_SHADER, vertexShader),
-                createShader(GL_FRAGMENT_SHADER, fragmentShader))
+            createShader(GL_FRAGMENT_SHADER, fragmentShader))
         glUseProgram(programId)
     }
 
